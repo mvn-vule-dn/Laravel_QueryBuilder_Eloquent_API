@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/users',[UserController::class,'index']);
+
+Route::get('/users/{id}/comments',[UserController::class,'showComments']);
+
+Route::get('/users/{id}',[UserController::class,'show']);
+
+Route::get('/comments/{id}/users',[CommentController::class,'showUser']);
+
+Route::get('/users/{id}/posts',[UserController::class,'showPosts']);
+
+Route::get('/create-user',[UserController::class,'create']);
+
+Route::post('/create-user',[UserController::class,'store']);
