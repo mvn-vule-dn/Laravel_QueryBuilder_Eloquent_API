@@ -17,27 +17,27 @@
     <section style="margin: 0 10%;background-color:aliceblue;">
         <h2 style="padding: 15px 40px">Profile:</h2>
         <div style="padding: 30px;display: flex; justify-content: center;">
-            <img src="http://localhost{{$profile->avatar}}" alt="avatar" style="margin-right: 24px">
+            <img src="http://localhost{{$user->avatar}}" alt="avatar" style="margin-right: 24px">
             <table>
                 <tr>
                     <th>User Name:</th>
-                    <td>{{$profile->name}}</td>
+                    <td>{{$user->name}}</td>
                 </tr>
                 <tr>
                     <th>Age:</th>
-                    <td>{{$profile->age}}</td>
+                    <td>{{$user->age}}</td>
                 </tr>
                 <tr>
                     <th>Address:</th>
-                    <td>{{$profile->address}}</td>
+                    <td>{{$user->profile->address}}</td>
                 </tr>
                 <tr>
                     <th>Tel:</th>
-                    <td>{{$profile->tel}}</td>
+                    <td>{{$user->profile->tel}}</td>
                 </tr>
                 <tr>
                     <th>Province:</th>
-                    <td>{{$profile->province}}</td>
+                    <td>{{$user->profile->province}}</td>
                 </tr>
             </table>
         </div>
@@ -54,12 +54,12 @@
                 </tr>
             </thead>
             <tbody>
-                @for($i=0; $i < count($posts); $i++)
+                @for($i=0; $i < count($user->posts); $i++)
                     <tr>
                         <th scope='row'>{{($i+1)}}</th>
-                        <td scope='row'>{{$posts[$i]->user_id}}</td>
-                        <td scope='row'>{{$posts[$i]->content}}</td>
-                        <td scope='row'>{{$posts[$i]->created_at}}</td>
+                        <td scope='row'>{{$user->posts[$i]->user_id}}</td>
+                        <td scope='row'>{{$user->posts[$i]->content}}</td>
+                        <td scope='row'>{{$user->posts[$i]->created_at}}</td>
                     </tr>
                 @endfor
                 </tr>
@@ -78,12 +78,12 @@
                 </tr>
             </thead>
             <tbody>
-                @for($i=0; $i < count($comments); $i++)
+                @for($i=0; $i < count($user->comments); $i++)
                     <tr>
                         <th scope='row'>{{($i+1)}}</th>
-                        <td scope='row'>{{$comments[$i]->user_id}}</td>
-                        <td scope='row'>{{$comments[$i]->content}}</td>
-                        <td scope='row'>{{$comments[$i]->post_id}}</td>
+                        <td scope='row'>{{$user->comments[$i]->user_id}}</td>
+                        <td scope='row'>{{$user->comments[$i]->content}}</td>
+                        <td scope='row'>{{$user->comments[$i]->post_id}}</td>
                     </tr>
                 @endfor
                 </tr>

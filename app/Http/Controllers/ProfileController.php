@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
-use App\Models\Post;
-use App\Models\User;
+use App\Models\Profile;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class CommentController extends Controller
+class ProfileController extends Controller
 {
 
     /**
@@ -45,30 +42,21 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Profile $profile)
     {
         //
     }
 
-    public function showUser($id)
-    {
-        $comment = Comment::find($id);
-        // $profile = User::find($comment->user_id)->profile()->with('user')->get();
-        // $profile = $profile[0];
-        $user = User::find($comment->user_id)->load('profile');
-        // dd($profile->toArray());
-        return view('showUser',compact('user'));
-    }
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Profile $profile)
     {
         //
     }
@@ -77,10 +65,10 @@ class CommentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Profile $profile)
     {
         //
     }
@@ -88,10 +76,10 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\Profile  $profile
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Profile $profile)
     {
         //
     }

@@ -32,3 +32,5 @@ Route::get('/users/{id}/posts',[UserController::class,'showPosts']);
 Route::get('/create-user',[UserController::class,'create']);
 
 Route::post('/create-user',[UserController::class,'store']);
+
+Route::post('/search',[UserController::class,'search']);
