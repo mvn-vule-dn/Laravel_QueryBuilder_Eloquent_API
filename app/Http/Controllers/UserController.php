@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = DB::table('users')->get();
+        $users = User::with('posts','comments')->simplePaginate(15);
         return view('users',compact('users'));
     }
 
@@ -39,21 +41,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->toArray());
-        $id = DB::table('users')->insertGetId([
-            'name' => $request->username,
-            'age' => $request->age,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'birthday' => $request->birthday,
-        ]);
+        $user = new User;
+        $user->name = $request->username;
+        $user->age = $request->age;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->birthday = $request->birthday;
+        $user->save();
 
-        DB::table('profiles')->insert([
-            'user_id' => $id,
-            'address' => $request->address,
-            'tel' => $request->tel,
-            'province' => $request->province
-        ]);
+        $profile = new Profile;
+        $profile->user_id = $user->id;
+        $profile->address = $request->address;
+        $profile->tel = $request->tel;
+        $profile->province = $request->province;
+        $profile->save();
+
         return redirect('/users');
     }
 
@@ -65,57 +67,23 @@ class UserController extends Controller
      */
     public function show($id)
     {     
-        $user = DB::table('users')
-                ->where('id', '=', $id)
-                ->get();
-        $user = $user[0];
-
-        $profile = DB::table('users')
-                    ->join('profiles', 'profiles.user_id', '=', 'users.id')
-                    ->where('profiles.user_id', '=', $user->id)
-                    ->select('profiles.*','users.name','users.age','users.avatar')
-                    ->get();
-        $profile = $profile[0];
-
-        $comments = DB::table('users')
-                    ->join('comments', 'users.id', '=', 'comments.user_id')
-                    ->where('comments.user_id', '=', $user->id)
-                    ->select('comments.*')
-                    ->get();
-
-        $posts = DB::table('users')
-                    ->join('posts', 'users.id', '=', 'posts.user_id')
-                    ->where('posts.user_id', '=', $user->id)
-                    ->select('posts.*')
-                    ->get();
-
-        return view('showUserDetail',compact('profile','comments','posts'));
+        $user = User::find($id)->load('profile','comments');
+        // $user->load('profile','comments');
+        
+        return view('showUserDetail',compact('user'));
     }
 
     public function showComments($id)
     {
-        $user = DB::table('users')
-                ->where('id', '=', $id)
-                ->get();
-        $user = $user[0];
-        $comments = DB::table('users')
-                    ->join('comments', 'users.id', '=', 'comments.user_id')
-                    ->where('comments.user_id', '=', $user->id)
-                    ->select('comments.*')
-                    ->get();
+        $comments = User::find($id)->comments;
+
         return view('comments',compact('comments'));
     }
 
-    public function showPosts($id){
-        $user = DB::table('users')
-                ->where('id', '=', $id)
-                ->get();
-        $user = $user[0];
-        $posts = DB::table('users')
-                    ->join('posts', 'users.id', '=', 'posts.user_id')
-                    ->where('posts.user_id', '=', $user->id)
-                    ->select('posts.*')
-                    ->get();
+    public function showPosts($id)
+    {
+        $posts = User::find($id)->posts;
+
         return view('posts',compact('posts'));
     }
     /**
@@ -139,6 +107,29 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+        // dd();
+        $user = null;
+        if ($request->info == 'name'){
+            $users = User::where('name','like','%'.$request->value.'%')->get();
+        }
+        if ($request->info == 'posts'){
+            $users = User::withCount('comments','posts')->get();
+            $users = $users->filter(function($user) use ($request){
+                return $user->posts_count == $request->value;
+            });
+        }
+        if ($request->info == 'comments'){
+            $users = User::withCount('comments','posts')->get();
+            $users = $users->filter(function($user) use ($request){
+                return $user->comments_count == $request->value;
+            });
+        }
+        // dd($users->toArray());
+        return view('/users',compact('users'));
     }
 
     /**

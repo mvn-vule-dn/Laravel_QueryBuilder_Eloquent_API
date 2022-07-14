@@ -17,17 +17,16 @@
     <div class=".container-md" style="margin: 50px 10% ;">
         <div style="display: flex;justify-content: space-between;">
             <h1>List Comment</h1>
-            @if(count($comments)>0)
-            <a href="/comments/{{$comments[0]->user_id}}/users" class="btn btn-primary" style="height: 40px;align-self:center">Show User</a>
-            @endIf
         </div>
         <table class="table table-success table-striped">
             <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Id Comment</th>
                     <th scope="col">User Id</th>
                     <th scope="col">Content</th> 
                     <th scope="col">Post id</th>
+                    <th scope="col">Action</th>
                 </tr>
             </thead>
             @if(count($comments)>0)
@@ -35,9 +34,11 @@
                 @for($i=0; $i < count($comments); $i++)
                     <tr>
                         <th scope='row'>{{($i+1)}}</th>
+                        <td scope='row'>{{$comments[$i]->id}}</td>
                         <td scope='row'>{{$comments[$i]->user_id}}</td>
                         <td scope='row'>{{$comments[$i]->content}}</td>
                         <td scope='row'>{{$comments[$i]->post_id}}</td>
+                        <td><a href="/comments/{{$comments[$i]->id}}/users" class="btn btn-primary" style="height: 40px;align-self:center">Show User</a></td>
                     </tr>
                 @endfor
                 </tr>

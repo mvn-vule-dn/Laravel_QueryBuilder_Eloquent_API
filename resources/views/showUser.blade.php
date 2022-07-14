@@ -17,32 +17,33 @@
     <section style="margin: 0 10%;background-color:aliceblue;">
         <h2 style="padding: 15px 40px">Profile:</h2>
         <div style="padding: 30px;display: flex; justify-content: center;">
-            <img src="http://localhost{{$profile->avatar}}" alt="avatar" style="margin-right: 24px">
+            <img src="http://localhost{{$user->avatar}}" alt="avatar" style="margin-right: 24px">
             <table>
                 <tr>
                     <th>User Name:</th>
-                    <td>{{$profile->name}}</td>
+                    <td>{{$user->name}}</td>
                 </tr>
                 <tr>
                     <th>Age:</th>
-                    <td>{{$profile->age}}</td>
+                    <td>{{$user->age}}</td>
                 </tr>
                 <tr>
                     <th>Address:</th>
-                    <td>{{$profile->address}}</td>
+                    <td>{{$user->profile->address}}</td>
                 </tr>
                 <tr>
                     <th>Tel:</th>
-                    <td>{{$profile->tel}}</td>
+                    <td>{{$user->profile->tel}}</td>
                 </tr>
                 <tr>
                     <th>Province:</th>
-                    <td>{{$profile->province}}</td>
+                    <td>{{$user->profile->province}}</td>
                 </tr>
             </table>
         </div>
     </section>
     <div class=".container-md" style="margin: 50px 10% ;">
+        <a href="/users/{{$user->id}}/comments" class="btn btn-primary hBack">Back</a>
         <a href="/users" class="btn btn-primary hBack">List User</a>
     </div>
 </body>

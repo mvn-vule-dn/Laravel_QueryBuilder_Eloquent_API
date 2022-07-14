@@ -10,6 +10,16 @@ class Profile extends Model
 {
     use HasFactory,SoftDeletes;
 
+    /**
+     * Get the user that owns the ProfileController
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     protected $fillable = [
         'address',
         'tel',
